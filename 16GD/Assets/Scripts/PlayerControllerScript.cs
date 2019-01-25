@@ -31,8 +31,11 @@ public class PlayerControllerScript : MonoBehaviour
 
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
         rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
-        if (Input.GetKeyDown("space") && isGrouded)
-            rb.AddForce(transform.up * JumpForce);
+        if (Input.GetKey("space") && isGrouded)
+        {
+            Vector3 jump = new Vector3(0.0f, JumpForce, 0.0f);
+            rb.AddForce(jump, ForceMode.Impulse);
+        }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
