@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         // Initiating
         if (Pickup.Instance != null)
         {
-            Pickup.Instance.PickedUp += PickedUp;
+            Pickup.Instance.OnPickedUp += OnPickedUp;
         }
     }
 
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     }
 
     // When an item is picked up
-    private static void PickedUp(Pickup pickup)
+    private static void OnPickedUp(Pickup pickup)
     {
         Debug.Log($"picked up {pickup.gameObject.name}");
     }

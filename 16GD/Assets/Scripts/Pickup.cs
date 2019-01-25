@@ -7,7 +7,9 @@ public class Pickup : MonoBehaviour
     public static Pickup Instance;
 
     // Events
-    public event Action<Pickup> PickedUp;
+    public event Action<Pickup> OnPickedUp;
+    public event Action<Pickup> OnCanPickup;
+    public event Action<Pickup> OnCanNotPickup;
 
     private void Awake()
     {
@@ -27,13 +29,37 @@ public class Pickup : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            OnPickedUp();
+            InvokeOnCanPickUp();
         }
     }
 
-    // Fires Picked up event
-    private void OnPickedUp()
+    private void OnTriggerExit(Collider other)
     {
-        PickedUp?.Invoke(this);
+        if(other.CompareTag("Player"))
+        {
+            InvokeOnCanNotPickUp();
+        }
     }
+
+    #region Events
+
+    // Fires Picked up event
+    public void InvokeOnPickedUp()
+    {
+        OnPickedUp?.Invoke(this);
+
+        Debug.Log($"picked up..");
+    }
+
+    private void InvokeOnCanPickUp()
+    {
+        OnCanPickup?.Invoke(this);
+    }
+
+    private void InvokeOnCanNotPickUp()
+    {
+        OnCanNotPickup?.Invoke(this);
+    }
+    
+    #endregion
 }
