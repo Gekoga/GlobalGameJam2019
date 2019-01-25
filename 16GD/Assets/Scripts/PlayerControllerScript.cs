@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerControllerScript : MonoBehaviour
 {
     private Rigidbody rb;
@@ -11,6 +12,7 @@ public class PlayerControllerScript : MonoBehaviour
     public float JumpForce;
 
     private bool isGrouded;
+    private bool canPickUp;
     private float DistanceToTheGround
     {
         get
@@ -23,6 +25,10 @@ public class PlayerControllerScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        Pickup.Instance.OnCanNotPickup += OnCanNotPickUp;
+        Pickup.Instance.OnCanPickup += OnCanPickUp;
+        Pickup.Instance.OnPickedUp += OnPickedUp;
     }
 
     void FixedUpdate()
@@ -34,9 +40,30 @@ public class PlayerControllerScript : MonoBehaviour
         if (Input.GetKeyDown("space") && isGrouded)
             rb.AddForce(transform.up * JumpForce);
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if(!Input.GetKeyDown(KeyCode.E)) return;
+        if(canPickUp)
         {
-            //Use Pickup
+            Pickup.Instance.InvokeOnPickedUp();
         }
+        //Use Pickup
     }
+
+    #region Events
+
+    private void OnPickedUp(Pickup pickup)
+    {
+
+    }
+
+    private void OnCanPickUp(Pickup pickup)
+    {
+        canPickUp = true;
+    }
+
+    private void OnCanNotPickUp(Pickup pickup)
+    {
+        canPickUp = false;
+    }
+
+    #endregion
 }
