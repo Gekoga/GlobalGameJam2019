@@ -4,63 +4,39 @@ using UnityEngine;
 
 public class PlayerControllerScript : MonoBehaviour
 {
-    public float originalSpeed;
-    public float Speed
-    {
-        get
-        {
-            if (IsGrounded)
-            {
-                return originalSpeed / 2;
-            }
-            else
-                return originalSpeed;
-        }
-    }
-
     private Rigidbody rb;
 
-    private bool IsGrounded
+    public float MouseSensitivity;
+    public float MoveSpeed;
+    public float JumpForce;
+
+    private bool isGrouded;
+    private float DistanceToTheGround
     {
         get
         {
-            if (rb.velocity.y == 0)
-            {
-                return true;
-            }
-            else
-                return false;
+            return GetComponent<Collider>().bounds.extents.y;
         }
     }
-
-    [Header("Remove Later")]
-    public bool isGround;
-    public float sped;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void FixedUpdate()
     {
-        isGround = IsGrounded;
-        sped = Speed;
+        isGrouded = Physics.Raycast(transform.position, Vector3.down, DistanceToTheGround + 0.1f);
 
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-        float jumpPower = 0;
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
+        rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
+        if (Input.GetKeyDown("space") && isGrouded)
+            rb.AddForce(transform.up * JumpForce);
 
-        if (IsGrounded)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                jumpPower = 50;
-            }
+            //Use Pickup
         }
-
-        Vector3 movement = new Vector3(moveHorizontal, jumpPower, moveVertical);
-
-        rb.AddForce(movement * Speed);
     }
 }
