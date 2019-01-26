@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerControllerScript : MonoBehaviour
 {
+    // Components
     private Rigidbody rb;
 
+    // Misc
     public float MouseSensitivity;
     public float MoveSpeed;
     public float JumpForce;
@@ -26,6 +26,10 @@ public class PlayerControllerScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
+        if(Pickup.Instance == null)
+        {
+            return;
+        }
         Pickup.Instance.OnCanNotPickup += OnCanNotPickUp;
         Pickup.Instance.OnCanPickup += OnCanPickUp;
         Pickup.Instance.OnPickedUp += OnPickedUp;
@@ -37,8 +41,12 @@ public class PlayerControllerScript : MonoBehaviour
 
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
         rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
-        if (Input.GetKeyDown("space") && isGrouded)
-            rb.AddForce(transform.up * JumpForce);
+        if (Input.GetKey("space") && isGrouded)
+        {
+            Vector3 jump = new Vector3(0.0f, JumpForce, 0.0f);
+            rb.AddForce(jump, ForceMode.Impulse);
+            isGrouded = false;
+        }
 
         if(!Input.GetKeyDown(KeyCode.E)) return;
         if(canPickUp)

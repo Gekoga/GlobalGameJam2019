@@ -24,7 +24,7 @@ public class Pickup : MonoBehaviour
         }
     }
 
-    // Fire OnPickedUp when player enters collider
+    // Fire OnCanPickUp when player enters collider
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -33,6 +33,7 @@ public class Pickup : MonoBehaviour
         }
     }
 
+    // Fire OnCanNotPickup when the player leaves the collider
     private void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Player"))

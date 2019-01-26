@@ -5,8 +5,9 @@ namespace Enemy
     public class BasicEnemy : AbstractEnemy
     {
         // Initializing
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             Name = "Basic Enemy";
             Health = 80f;
         }
