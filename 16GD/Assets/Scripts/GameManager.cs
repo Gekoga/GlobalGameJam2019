@@ -10,6 +10,13 @@ public class GameManager : MonoBehaviour
     // Misc
     private int enemyKillCount;
     public int EnemiesInGame;
+    public int EnemiesLeft
+    {
+        get
+        {
+            return EnemiesInGame - enemyKillCount;
+        }
+    }
 
     // Events
     public event Action<AbstractEnemy> OnEnemyDeath;
@@ -45,7 +52,8 @@ public class GameManager : MonoBehaviour
         enemyKillCount++;
         if(enemyKillCount >= EnemiesInGame)
         {
-            InvokeOnLevelCompleted();
+            RoomManager.Instance.onStageComplete();
+            //InvokeOnLevelCompleted();
         }
         Debug.Log($"we killed {enemy.Name}, we have now slain {enemyKillCount} enemies");
         Destroy(enemy.gameObject);

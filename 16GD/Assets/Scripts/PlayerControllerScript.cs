@@ -8,7 +8,19 @@ public class PlayerControllerScript : MonoBehaviour
 
     // Misc
     public float MouseSensitivity;
-    public float MoveSpeed;
+    public float moveSpeed;
+    private float MoveSpeed
+    {
+        get
+        {
+            if (isGrouded)
+            {
+                return moveSpeed / 10;
+            }
+            else
+                return (moveSpeed / 2) / 10;
+        }
+    }
     public float JumpForce;
 
     private bool isGrouded;
@@ -41,8 +53,12 @@ public class PlayerControllerScript : MonoBehaviour
 
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
         rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
-        if (Input.GetKeyDown("space") && isGrouded)
-            rb.AddForce(transform.up * JumpForce);
+        if (Input.GetKey("space") && isGrouded)
+        {
+            Vector3 jump = new Vector3(0.0f, JumpForce, 0.0f);
+            rb.AddForce(jump, ForceMode.Impulse);
+            isGrouded = false;
+        }
 
         if(!Input.GetKeyDown(KeyCode.E)) return;
         if(canPickUp)
