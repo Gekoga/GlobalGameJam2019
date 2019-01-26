@@ -10,13 +10,16 @@ public class RoomManager : MonoBehaviour
     public List<GameObject> Platforms = new List<GameObject>();
     public int visiblePlatformAmount;
 
-    private int totalStagesAmount;
+    public int totalStagesAmount;
     public int currentStage;
 
     public int enemiesAmount;
-    private int EnemiesLeft
+    public int EnemiesLeft
     {
-
+        get
+        {
+            return enemiesAmount - GameManager.Instance.EnemyKillCount;
+        }
     }
 
     public delegate void OnStageComplete();
@@ -48,13 +51,18 @@ public class RoomManager : MonoBehaviour
         for (int i = 0; i < visiblePlatformAmount; i++)
         {
             Platforms[i].SetActive(true);
+            if (Platforms[i].GetComponent<RoomScript>())
+            {
+                RoomScript room = Platforms[i].GetComponent<RoomScript>();
+                if (room.roomType == RoomScript.RoomType.Enemies)
+                    room.SpawnEnemies();
+            }
         }
     }
 
     public void ShowMore()
     {
         currentStage++;
-
         if (currentStage == totalStagesAmount)
         {
             GameManager.Instance.InvokeOnLevelCompleted();
@@ -70,7 +78,13 @@ public class RoomManager : MonoBehaviour
         for (int i = 0; i < visiblePlatformAmount; i++)
         {
             Platforms[i].SetActive(true);
-        }
+            if (Platforms[i].GetComponent<RoomScript>())
+            {
+                RoomScript room = Platforms[i].GetComponent<RoomScript>();
+                if (room.roomType == RoomScript.RoomType.Enemies)
+                    room.SpawnEnemies();
 
+            }
+        }
     }
 }

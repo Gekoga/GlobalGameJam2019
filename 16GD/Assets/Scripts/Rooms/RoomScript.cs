@@ -47,7 +47,7 @@ public class RoomScript : MonoBehaviour
     {
         get
         {
-            if (GameManager.Instance.EnemiesLeft == 0)
+            if (RoomManager.Instance.EnemiesLeft == 0)
                 return true;
             else
                 return false;
@@ -56,9 +56,6 @@ public class RoomScript : MonoBehaviour
 
     public void Start()
     {
-        if (roomType == RoomType.Enemies)
-            SpawnEnemies();
-
         RoomAnimator.SetBool(HideWalls, true);
         RoomAnimator.SetBool(ShowWalls, false);
     }
@@ -104,8 +101,11 @@ public class RoomScript : MonoBehaviour
 
     private IEnumerator WaitAfterEnemies()
     {
+        Debug.Log("Test one");
         //Wait for a while to check if there are enemies, otherwise it will return 0
         yield return new WaitWhile(() => NoEnemiesLeft == false);
+
+        Debug.Log("Test two");
 
         RoomAnimator.SetBool(HideWalls, true);
         RoomAnimator.SetBool(ShowWalls, false);
