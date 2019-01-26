@@ -45,11 +45,14 @@ public class RoomScript : MonoBehaviour
     public Vector3 spawnArea;
     public GameObject enemyPrefab;
 
-    private int EnemiesAmount
+    private bool NoEnemiesLeft
     {
         get
         {
-            return GameManager.Instance.EnemiesLeft;
+            if (GameManager.Instance.EnemiesLeft == 0)
+                return true;
+            else
+                return false;
         }
     }
 
@@ -61,7 +64,8 @@ public class RoomScript : MonoBehaviour
         hideWall = true;
         showWall = false;
 
-        RoomAnimator.SetBool("HideWalls", hideWall);
+        RoomAnimator.SetBool("HideWalls", true);
+        RoomAnimator.SetBool("ShowWalls", false);
     }
 
     public void OnTriggerEnter(Collider other)
@@ -92,7 +96,8 @@ public class RoomScript : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
         }
 
-        StartCoroutine(WaitAfterEnemies());
+
+        Invoke("WaitEnemies", 1f);
     }
 
     private void OnDrawGizmos()
@@ -101,17 +106,23 @@ public class RoomScript : MonoBehaviour
         Gizmos.DrawCube(SpawnCenter, spawnArea);
     }
 
+    private void WaitEnemies()
+    {
+        StartCoroutine(WaitAfterEnemies());
+    }
+
     private IEnumerator WaitAfterEnemies()
     {
         //Wait for a while to check if there are enemies, otherwise it will return 0
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitUntil(() => EnemiesAmount == 0);
-        Debug.Log("Test");
+        yield return new WaitWhile(() => NoEnemiesLeft == false);
+        Debug.Log("TestSomething");
 
         hideWall = true;
         showWall = false;
-        RoomAnimator.SetBool("ShowWalls", showWall);
-        RoomAnimator.SetBool("HideWalls", hideWall);
+        RoomAnimator.SetBool("ShowWalls", false);
+        RoomAnimator.SetBool("HideWalls", true);
+
+        Debug.Log("Test");
 
     }
 
