@@ -9,6 +9,11 @@ namespace Enemy
         public string Name = "Abstract Enemy";
         public float Health = 100;
 
+        protected virtual void Start()
+        {
+            GameManager.Instance.EnemiesInGame++;
+        }
+
         public virtual void OnDeath()
         {
             GameManager.Instance.EnemyDeath(this);
