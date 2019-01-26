@@ -46,13 +46,13 @@ public class RoomScript : MonoBehaviour
 
     public void Start()
     {
+        GameManager.Instance.OnLevelCompleted += ShowWall;
+
         switch (roomType)
         {
             case RoomType.Enemies:
                 SpawnEnemies();
                 showWall = true;
-
-                StartCoroutine(EnemyCounter());
                 break;
             case RoomType.Pickup:
                 hideWall = true;
@@ -75,8 +75,6 @@ public class RoomScript : MonoBehaviour
     public void SpawnEnemies()
     {
         GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
-        AllEnemies.Add(enemy.GetComponent<AbstractEnemy>());
-
     }
 
     private static Vector3 RandomPointInBox(Vector3 center, Vector3 size)
@@ -93,22 +91,32 @@ public class RoomScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(ShowWall());
+            GameManager.Instance.InvokeOnLevelCompleted();
         }
     }
 
-    public IEnumerator EnemyCounter()
+    public void SetWallBools(bool shouldHide)
     {
-        yield return new WaitUntil(() => AllEnemies.Count == 0);
-        hideWall = true;
-        showWall = false;
+        hideWall = shouldHide;
+        showWall = !shouldHide;
     }
 
-    public IEnumerator ShowWall()
+    public void ShowWall(GameManager gameManager)
     {
-        showWall = true;
-        hideWall = false;
-        yield break;
+        switch (roomType)
+        {
+            case RoomType.Enemies:
+                showWall = false;
+                hideWall = true;
+                break;
+            case RoomType.Pickup:
+                hideWall = false;
+                showWall = true;
+                break;
+            default:
+                break;
+        }
+        
     }
 
     private IEnumerator AnimationUpdate()
