@@ -29,8 +29,10 @@ public class RoomScript : MonoBehaviour
         }
     }
 
-    public bool hideWall;
-    public bool showWall;
+    private bool hideWall;
+    private bool showWall;
+
+    private bool useAnimations;
 
     public Vector3 spawnCenter;
     private Vector3 SpawnCenter
@@ -47,6 +49,7 @@ public class RoomScript : MonoBehaviour
     public void Start()
     {
         GameManager.Instance.OnLevelCompleted += ShowWall;
+        useAnimations = true;
 
         switch (roomType)
         {
@@ -91,7 +94,17 @@ public class RoomScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.InvokeOnLevelCompleted();
+            switch (roomType)
+            {
+                case RoomType.Enemies:
+                    break;
+                case RoomType.Pickup:
+                    RoomManager.Instance.onStageComplete();
+                    break;
+                default:
+                    break;
+            }
+           
         }
     }
 
@@ -116,7 +129,6 @@ public class RoomScript : MonoBehaviour
             default:
                 break;
         }
-        
     }
 
     private IEnumerator AnimationUpdate()
@@ -127,7 +139,7 @@ public class RoomScript : MonoBehaviour
             RoomAnimator.SetBool("ShowWalls", showWall);
             yield return new WaitForEndOfFrame();
 
-        } while (true);
+        } while (useAnimations);
 
     }
 
