@@ -17,7 +17,7 @@ public class PlayerControllerScript : MonoBehaviour
     {
         get
         {
-            return GetComponent<Collider>().bounds.extents.y;
+            return GetComponentInChildren<Collider>().bounds.extents.y;
         }
     }
 
