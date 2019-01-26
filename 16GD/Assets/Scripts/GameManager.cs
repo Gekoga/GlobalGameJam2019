@@ -10,6 +10,13 @@ public class GameManager : MonoBehaviour
     // Misc
     private int enemyKillCount;
     public int EnemiesInGame;
+    public int EnemiesLeft
+    {
+        get
+        {
+            return EnemiesInGame - enemyKillCount;
+        }
+    }
 
     // Events
     public event Action<AbstractEnemy> OnEnemyDeath;

@@ -44,40 +44,35 @@ public class RoomScript : MonoBehaviour
     }
     public Vector3 spawnArea;
     public GameObject enemyPrefab;
-    public List<AbstractEnemy> AllEnemies = new List<AbstractEnemy>();
+
+    private int EnemiesAmount
+    {
+        get
+        {
+            return GameManager.Instance.EnemiesLeft;
+        }
+    }
 
     public void Start()
     {
-        GameManager.Instance.OnLevelCompleted += ShowWall;
-        useAnimations = true;
-
-        switch (roomType)
-        {
-            case RoomType.Enemies:
-                SpawnEnemies();
-                showWall = true;
-                break;
-            case RoomType.Pickup:
-                hideWall = true;
-                break;
-            default:
-                break;
-        }
-
-        StartCoroutine(AnimationUpdate());
-    }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
+        if (roomType == RoomType.Enemies)
             SpawnEnemies();
-        }
+
+        hideWall = true;
+        showWall = false;
+
+        RoomAnimator.SetBool("HideWalls", hideWall);
     }
 
-    public void SpawnEnemies()
+    public void OnTriggerEnter(Collider other)
     {
-        GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
+        if (other.CompareTag("Player"))
+        {
+            hideWall = false;
+            showWall = true;
+            RoomAnimator.SetBool("HideWalls", hideWall);
+            RoomAnimator.SetBool("ShowWalls", showWall);
+        }
     }
 
     private static Vector3 RandomPointInBox(Vector3 center, Vector3 size)
@@ -90,63 +85,34 @@ public class RoomScript : MonoBehaviour
         );
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void SpawnEnemies()
     {
-        if (other.CompareTag("Player"))
+        for (int i = 0; i < RoomManager.Instance.enemiesAmount; i++)
         {
-            switch (roomType)
-            {
-                case RoomType.Enemies:
-                    break;
-                case RoomType.Pickup:
-                    RoomManager.Instance.onStageComplete();
-                    break;
-                default:
-                    break;
-            }
-           
+            GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
         }
-    }
 
-    public void SetWallBools(bool shouldHide)
-    {
-        hideWall = shouldHide;
-        showWall = !shouldHide;
-    }
-
-    public void ShowWall(GameManager gameManager)
-    {
-        switch (roomType)
-        {
-            case RoomType.Enemies:
-                showWall = false;
-                hideWall = true;
-                break;
-            case RoomType.Pickup:
-                hideWall = false;
-                showWall = true;
-                break;
-            default:
-                break;
-        }
-    }
-
-    private IEnumerator AnimationUpdate()
-    {
-        do
-        {
-            RoomAnimator.SetBool("HideWalls", hideWall);
-            RoomAnimator.SetBool("ShowWalls", showWall);
-            yield return new WaitForEndOfFrame();
-
-        } while (useAnimations);
-
+        StartCoroutine(WaitAfterEnemies());
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawCube(SpawnCenter, spawnArea);
+    }
+
+    private IEnumerator WaitAfterEnemies()
+    {
+        //Wait for a while to check if there are enemies, otherwise it will return 0
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => EnemiesAmount == 0);
+        Debug.Log("Test");
+
+        hideWall = true;
+        showWall = false;
+        RoomAnimator.SetBool("ShowWalls", showWall);
+        RoomAnimator.SetBool("HideWalls", hideWall);
+
     }
 
     //See when you enter

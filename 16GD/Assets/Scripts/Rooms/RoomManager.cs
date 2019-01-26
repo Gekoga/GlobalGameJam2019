@@ -13,6 +13,8 @@ public class RoomManager : MonoBehaviour
     private int totalStagesAmount;
     public int currentStage;
 
+    public int enemiesAmount;
+
     public delegate void OnStageComplete();
     public OnStageComplete onStageComplete;
 
