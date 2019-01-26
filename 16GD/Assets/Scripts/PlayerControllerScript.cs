@@ -8,7 +8,19 @@ public class PlayerControllerScript : MonoBehaviour
 
     // Misc
     public float MouseSensitivity;
-    public float MoveSpeed;
+    public float moveSpeed;
+    private float MoveSpeed
+    {
+        get
+        {
+            if (isGrouded)
+            {
+                return moveSpeed / 10;
+            }
+            else
+                return (moveSpeed / 2) / 10;
+        }
+    }
     public float JumpForce;
 
     private bool isGrouded;
