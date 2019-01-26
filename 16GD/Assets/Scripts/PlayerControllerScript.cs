@@ -41,6 +41,7 @@ public class PlayerControllerScript : MonoBehaviour
         {
             Vector3 jump = new Vector3(0.0f, JumpForce, 0.0f);
             rb.AddForce(jump, ForceMode.Impulse);
+            isGrouded = false;
         }
 
         if(!Input.GetKeyDown(KeyCode.E)) return;
