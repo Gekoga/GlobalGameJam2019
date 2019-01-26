@@ -7,11 +7,13 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance;
 
-    // Events
-    public event Action<AbstractEnemy> OnEnemyDeath;
-
     // Misc
     private int enemyKillCount;
+    public int EnemiesInGame;
+
+    // Events
+    public event Action<AbstractEnemy> OnEnemyDeath;
+    public event Action<GameManager> OnLevelCompleted;
 
     // Makes sure there is only one instance of the GameManager in the scene
     private void Awake()
@@ -41,6 +43,10 @@ public class GameManager : MonoBehaviour
     {
         OnEnemyDeath?.Invoke(enemy);
         enemyKillCount++;
+        if(enemyKillCount >= EnemiesInGame)
+        {
+            InvokeOnLevelCompleted();
+        }
         Debug.Log($"we killed {enemy.Name}, we have now slain {enemyKillCount} enemies");
         Destroy(enemy.gameObject);
     }
@@ -49,5 +55,12 @@ public class GameManager : MonoBehaviour
     private static void OnPickedUp(Pickup pickup)
     {
         Debug.Log($"picked up {pickup.gameObject.name}");
+    }
+
+    // Invokes the OnLevelCompleted event action
+    public void InvokeOnLevelCompleted()
+    {
+        OnLevelCompleted?.Invoke(this);
+        Debug.Log("We completed the level");
     }
 }

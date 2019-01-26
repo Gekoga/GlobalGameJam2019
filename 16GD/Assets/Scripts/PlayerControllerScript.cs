@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerControllerScript : MonoBehaviour
 {
+    // Components
     private Rigidbody rb;
 
+    // Misc
     public float MouseSensitivity;
     public float MoveSpeed;
     public float JumpForce;
@@ -26,6 +26,10 @@ public class PlayerControllerScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
+        if(Pickup.Instance == null)
+        {
+            return;
+        }
         Pickup.Instance.OnCanNotPickup += OnCanNotPickUp;
         Pickup.Instance.OnCanPickup += OnCanPickUp;
         Pickup.Instance.OnPickedUp += OnPickedUp;
