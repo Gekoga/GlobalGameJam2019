@@ -62,6 +62,8 @@ namespace Enemy
         }
         public int damage;
 
+        public bool hideGizmos;
+
         // Misc
         [HideInInspector]
         public string Name = "Abstract Enemy";
@@ -128,11 +130,14 @@ namespace Enemy
 
         protected void OnDrawGizmos()
         {
-            Gizmos.color = new Color(0, 1, 0, 0.25f);
-            Gizmos.DrawSphere(this.transform.position, seeRange);
+            if (!hideGizmos)
+            {
+                Gizmos.color = new Color(0, 1, 0, 0.25f);
+                Gizmos.DrawSphere(this.transform.position, seeRange);
 
-            Gizmos.color = new Color(0,0,1,0.5f);
-            Gizmos.DrawSphere(this.transform.position, attackRange);
+                Gizmos.color = new Color(0, 0, 1, 0.5f);
+                Gizmos.DrawSphere(this.transform.position, attackRange);
+            }
         }
     }
 }

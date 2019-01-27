@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: 0
   damage: 5
+  hideGizmos: 1
   Name: Abstract Enemy
   Health: 100
 --- !u!195 &188214232527654649
