@@ -15,6 +15,8 @@ namespace Enemy
         }
         public Stage stage;
 
+        public AnimationCurve plot = new AnimationCurve();
+
         protected NavMeshAgent agent { get { return this.GetComponent<NavMeshAgent>(); } }
 
         public Vector3 PlayerLocation
@@ -33,6 +35,22 @@ namespace Enemy
         private Vector3 OwnLocation { get { return this.transform.position; } }
         private float seeRange = 7f;
         private float attackRange = 2f;
+        private float attackSpeed = 1;
+        private float attacktime;
+        private bool canAttack
+        {
+            get
+            {
+                if (attacktime < Time.time)
+                {
+                    
+                    attacktime = Time.time + attackSpeed;
+                    return true;
+                }
+                else return false;
+            }
+        }
+        private float damage;
 
         // Misc
         [HideInInspector]
@@ -47,6 +65,7 @@ namespace Enemy
 
         protected virtual void Update()
         {
+            plot.AddKey(Time.realtimeSinceStartup, attacktime);
             float distance = (PlayerLocation - OwnLocation).sqrMagnitude;
             if (distance < seeRange * seeRange)
             {
@@ -66,7 +85,7 @@ namespace Enemy
                     agent.SetDestination(PlayerLocation);
                     break;
                 case Stage.Attack:
-
+                    Attack();
                     break;
                 case Stage.Dead:
                     break;
@@ -78,6 +97,12 @@ namespace Enemy
         public virtual void OnDeath()
         {
             GameManager.Instance.EnemyDeath(this);
+        }
+
+        protected virtual void Attack()
+        {
+            if (canAttack)
+                Debug.Log("KNEEEEEEEESSSSS");
         }
 
         // Subtracts health and checks if we died
