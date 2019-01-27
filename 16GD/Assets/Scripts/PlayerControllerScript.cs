@@ -33,8 +33,12 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
+    public int Health = 100;
+
     void Start()
     {
+        GameManager.Instance.playerReference = this;
+
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -51,6 +55,8 @@ public class PlayerControllerScript : MonoBehaviour
     {
         isGrouded = Physics.Raycast(transform.position, Vector3.down, DistanceToTheGround + 0.1f);
 
+        if (Input.GetAxis("Mouse X") == 0)
+            rb.angularVelocity = Vector3.zero;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
         rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
         if (Input.GetKey("space") && isGrouded)
@@ -65,6 +71,24 @@ public class PlayerControllerScript : MonoBehaviour
         {
             Pickup.Instance.InvokeOnPickedUp();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+
+        if (Health <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        LevelsScript.Instance.RespawnPlayer(gameObject);
+        LevelsScript.Instance.CurrentQuestion.Start();
+        Health = 100;
+        Debug.Log("Player died");
     }
 
     #region Events

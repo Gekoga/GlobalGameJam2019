@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance;
 
+    public PlayerControllerScript playerReference;
+
     // Misc
     public int EnemyKillCount { get; private set; }
     public int EnemiesInGame;
@@ -43,9 +45,10 @@ public class GameManager : MonoBehaviour
     {
         OnEnemyDeath?.Invoke(enemy);
         EnemyKillCount++;
-        if(EnemyKillCount >= EnemiesInGame)
+        LevelsScript.Instance.CurrentQuestion.killedEnemies++;
+        if (EnemyKillCount >= EnemiesInGame)
         {
-            RoomManager.Instance.onStageComplete();
+            LevelsScript.Instance.EndQuestion();
             //InvokeOnLevelCompleted();
         }
         Debug.Log($"we killed {enemy.Name}, we have now slain {EnemyKillCount} enemies");
