@@ -53,7 +53,7 @@ public class QuestionsScript : MonoBehaviour
     {
         get
         {
-            if (LevelsScript.Instance.enemyAmount >= killedEnemies)
+            if (LevelsScript.Instance.enemyAmount == killedEnemies)
             {
                 return true;
             }
@@ -76,6 +76,8 @@ public class QuestionsScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (AllEnemiesDead)
+                return;
             RoomAnimator.SetBool(HideWalls, false);
             RoomAnimator.SetBool(ShowWalls, true);
         }

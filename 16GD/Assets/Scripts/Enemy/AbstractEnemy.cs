@@ -15,20 +15,30 @@ namespace Enemy
         }
         public Stage stage;
 
-        public AnimationCurve plot = new AnimationCurve();
-
         protected NavMeshAgent agent { get { return this.GetComponent<NavMeshAgent>(); } }
 
         public Vector3 PlayerLocation
         {
             get
             {
-                if (GameManager.Instance.playerReference != null)
+                if (Player != null)
                 {
-                    return GameManager.Instance.playerReference.transform.position;
+                    return Player.transform.position;
                 }
                 else
                     return OwnLocation;
+            }
+        }
+        public PlayerControllerScript Player
+        {
+            get
+            {
+                if (GameManager.Instance.playerReference != null)
+                {
+                    return GameManager.Instance.playerReference;
+                }
+                else
+                    return null;
             }
         }
 
@@ -50,7 +60,7 @@ namespace Enemy
                 else return false;
             }
         }
-        private float damage;
+        public int damage;
 
         // Misc
         [HideInInspector]
@@ -65,7 +75,6 @@ namespace Enemy
 
         protected virtual void Update()
         {
-            plot.AddKey(Time.realtimeSinceStartup, attacktime);
             float distance = (PlayerLocation - OwnLocation).sqrMagnitude;
             if (distance < seeRange * seeRange)
             {
@@ -102,6 +111,7 @@ namespace Enemy
         protected virtual void Attack()
         {
             if (canAttack)
+                Player.TakeDamage(damage);
                 Debug.Log("KNEEEEEEEESSSSS");
         }
 

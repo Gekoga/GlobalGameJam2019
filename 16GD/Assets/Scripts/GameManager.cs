@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
     {
         OnEnemyDeath?.Invoke(enemy);
         EnemyKillCount++;
-        if(EnemyKillCount >= EnemiesInGame)
+        LevelsScript.Instance.CurrentQuestion.killedEnemies++;
+        if (EnemyKillCount >= EnemiesInGame)
         {
             LevelsScript.Instance.EndQuestion();
             //InvokeOnLevelCompleted();

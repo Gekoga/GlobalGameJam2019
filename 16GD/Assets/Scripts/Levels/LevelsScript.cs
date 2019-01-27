@@ -73,11 +73,16 @@ public class LevelsScript : MonoBehaviour
         StartQuestion();
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.transform.position = CurrentQuestion.RespawnLocation;
+            RespawnPlayer(other.gameObject);
         }
+    }
+
+    public void RespawnPlayer(GameObject player)
+    {
+        player.transform.position = CurrentQuestion.RespawnLocation;
     }
 }

@@ -33,6 +33,8 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
+    public int Health = 100;
+
     void Start()
     {
         GameManager.Instance.playerReference = this;
@@ -69,6 +71,24 @@ public class PlayerControllerScript : MonoBehaviour
         {
             Pickup.Instance.InvokeOnPickedUp();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+
+        if (Health <= 0)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        LevelsScript.Instance.RespawnPlayer(gameObject);
+        LevelsScript.Instance.CurrentQuestion.Start();
+        Health = 100;
+        Debug.Log("Player died");
     }
 
     #region Events
