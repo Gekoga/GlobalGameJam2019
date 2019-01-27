@@ -33,9 +33,6 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
-    public float rotate;
-    public Quaternion test;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -53,9 +50,6 @@ public class PlayerControllerScript : MonoBehaviour
     void FixedUpdate()
     {
         isGrouded = Physics.Raycast(transform.position, Vector3.down, DistanceToTheGround + 0.1f);
-
-        rotate = Input.GetAxis("Mouse X") * MouseSensitivity;
-        test = rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0));
 
         if (Input.GetAxis("Mouse X") == 0)
             rb.angularVelocity = Vector3.zero;

@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
         EnemyKillCount++;
         if(EnemyKillCount >= EnemiesInGame)
         {
-            RoomManager.Instance.onStageComplete();
+            LevelsScript.Instance.EndQuestion();
+            //RoomManager.Instance.onStageComplete();
             //InvokeOnLevelCompleted();
         }
         Debug.Log($"we killed {enemy.Name}, we have now slain {EnemyKillCount} enemies");

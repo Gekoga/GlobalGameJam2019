@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Enemy;
+using System;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BoxCollider))]
-public class RoomScript : MonoBehaviour
+public class QuestionsScript : MonoBehaviour
 {
-    public enum RoomType
+    public enum RoomTypes
     {
-        Enemies,
-        Pickup
+        Enemy,
+        PickUp
     }
-    public RoomType roomType;
+    public RoomTypes roomTypes;
 
     private Animator RoomAnimator
     {
@@ -29,9 +29,6 @@ public class RoomScript : MonoBehaviour
         }
     }
 
-    private static readonly string HideWalls = "HideWalls";
-    private static readonly string ShowWalls = "ShowWalls";
-
     public Vector3 spawnCenter;
     private Vector3 SpawnCenter
     {
@@ -41,18 +38,23 @@ public class RoomScript : MonoBehaviour
         }
     }
     public Vector3 spawnArea;
-    public GameObject enemyPrefab;
 
-    private bool NoEnemiesLeft
+    public int killedEnemies;
+    private bool AllEnemiesDead
     {
         get
         {
-            if (RoomManager.Instance.EnemiesLeft == 0)
+            if (LevelsScript.Instance.enemyAmount >= killedEnemies)
+            {
                 return true;
+            }
             else
                 return false;
         }
     }
+
+    private static readonly string HideWalls = "HideWalls";
+    private static readonly string ShowWalls = "ShowWalls";
 
     public void Start()
     {
@@ -72,20 +74,18 @@ public class RoomScript : MonoBehaviour
     private static Vector3 RandomPointInBox(Vector3 center, Vector3 size)
     {
         return center + new Vector3(
-           (Random.value - 0.5f) * size.x,
-           (Random.value - 0.5f) * size.y,
-           (Random.value - 0.5f) * size.z
+           (UnityEngine.Random.value - 0.5f) * size.x,
+           (UnityEngine.Random.value - 0.5f) * size.y,
+           (UnityEngine.Random.value - 0.5f) * size.z
         );
     }
 
-    public void SpawnEnemies()
+    public void SpawnEnemies(int spawnAmount)
     {
-        for (int i = 0; i < RoomManager.Instance.enemiesAmount; i++)
+        for (int i = 0; i < spawnAmount; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
+            GameObject enemy = Instantiate(LevelsScript.Instance.enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
         }
-
-        Invoke("WaitEnemies", 1f);
     }
 
     private void OnDrawGizmos()
@@ -93,26 +93,4 @@ public class RoomScript : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawCube(SpawnCenter, spawnArea);
     }
-
-    private void WaitEnemies()
-    {
-        StartCoroutine(WaitAfterEnemies());
-    }
-
-    private IEnumerator WaitAfterEnemies()
-    {
-        Debug.Log("Test one");
-        //Wait for a while to check if there are enemies, otherwise it will return 0
-        yield return new WaitWhile(() => NoEnemiesLeft == false);
-
-        Debug.Log("Test two");
-
-        RoomAnimator.SetBool(HideWalls, true);
-        RoomAnimator.SetBool(ShowWalls, false);
-    }
-
-    //See when you enter
-    //Start the animation when you enter
-    //Check if you've beaten all the enemies
-    //Start second animation
 }
