@@ -55,7 +55,7 @@ public class MainCharacterAnimations : MonoBehaviour
 
         if (!grounded && playerControllerScript.isGrouded)
         {
-            timer = 0.7f;
+            //timer = 0.7f;
             grounded = true;
         }
 
