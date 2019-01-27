@@ -13,17 +13,13 @@ public class PlayerControllerScript : MonoBehaviour
     {
         get
         {
-            if (isGrouded)
-            {
-                return moveSpeed / 10;
-            }
-            else
-                return (moveSpeed / 2) / 10;
+            return moveSpeed / 10;
         }
     }
     public float JumpForce;
 
     public bool isGrouded;
+    public bool canJump;
     private bool canPickUp;
     private float DistanceToTheGround
     {
@@ -34,6 +30,8 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
     public int Health = 100;
+
+    public float test;
 
     void Start()
     {
@@ -53,21 +51,24 @@ public class PlayerControllerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        isGrouded = Physics.Raycast(transform.position, Vector3.down, DistanceToTheGround + 0.1f);
+        isGrouded = Physics.Raycast(transform.position, Vector3.down, DistanceToTheGround, 1 << LayerMask.NameToLayer("Ground"));
 
         if (Input.GetAxis("Mouse X") == 0)
             rb.angularVelocity = Vector3.zero;
+
         rb.MoveRotation(rb.rotation * Quaternion.Euler(new Vector3(0, Input.GetAxis("Mouse X") * MouseSensitivity, 0)));
         rb.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") * MoveSpeed) + (transform.right * Input.GetAxis("Horizontal") * MoveSpeed));
-        if (Input.GetKey("space") && isGrouded)
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrouded)
         {
             Vector3 jump = new Vector3(0.0f, JumpForce, 0.0f);
+            rb.velocity = jump;
             rb.AddForce(jump, ForceMode.Impulse);
             isGrouded = false;
         }
 
-        if(!Input.GetKeyDown(KeyCode.E)) return;
-        if(canPickUp)
+        if (!Input.GetKeyDown(KeyCode.E)) return;
+        if (canPickUp)
         {
             Pickup.Instance.InvokeOnPickedUp();
         }

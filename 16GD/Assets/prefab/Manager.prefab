@@ -45,11 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07a42ab8b8941e488bd833d23c10bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Questions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  Questions: []
   indexQuestion: 0
   enemyAmount: 5
   enemyPrefab: {fileID: 5468118471784860781, guid: 977f26a8570af09468d7c91afdccbaea,
