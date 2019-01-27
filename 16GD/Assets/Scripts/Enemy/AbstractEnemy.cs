@@ -1,5 +1,4 @@
-﻿using Player;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy
@@ -54,7 +53,7 @@ namespace Enemy
             {
                 if (attacktime < Time.time)
                 {
-                    
+
                     attacktime = Time.time + attackSpeed;
                     return true;
                 }
@@ -79,11 +78,22 @@ namespace Enemy
         protected virtual void Start()
         {
             GameManager.Instance.EnemiesInGame++;
+            if(agent == null)
+            {
+                return;
+            }
             agent.stoppingDistance = attackRange;
         }
 
         protected virtual void Update()
         {
+            if (t < PulseDelay)
+            {
+                t += Time.deltaTime;
+                return;
+            }
+            DamagePulse();
+
             float distance = (PlayerLocation - OwnLocation).sqrMagnitude;
             if (distance < seeRange * seeRange)
             {
@@ -100,6 +110,10 @@ namespace Enemy
                 case Stage.Idle:
                     break;
                 case Stage.Walk:
+                    if(agent == null)
+                    {
+                        break;
+                    }
                     agent.SetDestination(PlayerLocation);
                     break;
                 case Stage.Attack:
@@ -117,21 +131,11 @@ namespace Enemy
             GameManager.Instance.EnemyDeath(this);
         }
 
-        private void Update()
-        {
-            if(t < PulseDelay)
-            {
-                t += Time.deltaTime;
-                return;
-            }
-            DamagePulse();
-        }
-
         protected virtual void Attack()
         {
             if (canAttack)
                 Player.TakeDamage(damage);
-                Debug.Log("KNEEEEEEEESSSSS");
+            Debug.Log("KNEEEEEEEESSSSS");
         }
 
         // Subtracts health and checks if we died
@@ -139,7 +143,7 @@ namespace Enemy
         {
             Health -= damage;
 
-            if(Health <= 0)
+            if (Health <= 0)
             {
                 OnDeath();
             }
@@ -148,17 +152,15 @@ namespace Enemy
         public virtual void DamagePulse()
         {
             RaycastHit hit;
-            if(!Physics.SphereCast(transform.position, PulseRange, new Vector3(1, 1, 1), out hit)) return;
+            if (!Physics.SphereCast(transform.position, PulseRange, new Vector3(1, 1, 1), out hit)) return;
 
-            if(hit.collider.GetComponent<PlayerHealth>())
-            {
-                hit.collider.GetComponent<PlayerHealth>().TakeDamage(Damage);
-            }
+            hit.collider.GetComponent<PlayerControllerScript>()?.TakeDamage(Damage);
         }
 
         public virtual void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            var alpha = 0.25f;
+            Gizmos.color = new Color(1,0,0,alpha);
             Gizmos.DrawSphere(transform.position, PulseRange);
         }
 

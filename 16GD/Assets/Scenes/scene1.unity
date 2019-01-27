@@ -144,8 +144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c7a0e999c50f549b2ee611f2791d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
+  damage: 0
+  hideGizmos: 0
   Name: Boss
   Health: 200
+  Damage: 20
+  PulseRange: 3
+  PulseDelay: 0
 --- !u!65 &420908702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -504,6 +510,8 @@ MonoBehaviour:
   MouseSensitivity: 0
   moveSpeed: 0
   JumpForce: 0
+  isGrouded: 0
+  Health: 100
 --- !u!54 &614165052
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -991,6 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508ddf1c3b5e57941a218762e317c3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerReference: {fileID: 0}
   EnemiesInGame: 0
   LevelInt: 1
 --- !u!4 &1257971381
@@ -1259,7 +1268,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661468975}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.03, y: -10.19, z: -3.32}
+  m_LocalPosition: {x: 8.03, y: -7.25, z: -3.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1277,8 +1286,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c7a0e999c50f549b2ee611f2791d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
+  damage: 0
+  hideGizmos: 0
   Name: Abstract Enemy
   Health: 100
+  Damage: 20
+  PulseRange: 0
+  PulseDelay: 0
 --- !u!1 &1713177701
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,8 +1326,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c7a0e999c50f549b2ee611f2791d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
+  damage: 0
+  hideGizmos: 0
   Name: Ultra Enemy
   Health: 150
+  Damage: 20
+  PulseRange: 5
+  PulseDelay: 0
 --- !u!65 &1713177703
 BoxCollider:
   m_ObjectHideFlags: 0
