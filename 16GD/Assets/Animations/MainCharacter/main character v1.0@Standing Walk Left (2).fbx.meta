@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 132e48b828e4984478a47c2e34ebb990
+guid: 89b9044af3305f047b5adbe68212e72c
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -87,7 +87,7 @@ ModelImporter:
     400078: mixamorig:Spine
     400080: mixamorig:Spine1
     400082: mixamorig:Spine2
-    7400000: Unarmed Walk Back
+    7400000: Standing Walk Left (2)
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -118,10 +118,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Unarmed Walk Back
+      name: Standing Walk Left (2)
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 77
+      lastFrame: 73
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
