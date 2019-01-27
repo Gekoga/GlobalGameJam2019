@@ -6542,6 +6542,7 @@ MonoBehaviour:
   MouseSensitivity: 5
   moveSpeed: 4
   JumpForce: 50
+  isGrouded: 0
   Health: 100
 --- !u!1001 &392333426
 PrefabInstance:
@@ -14625,6 +14626,7 @@ MonoBehaviour:
   MouseSensitivity: 1
   moveSpeed: 1
   JumpForce: 1
+  isGrouded: 0
   Health: 100
 --- !u!54 &2035475197
 Rigidbody:
@@ -15067,9 +15069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Name: 
-  m_EditorClassIdentifier: 
   m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &2113467519
 BoxCollider:
   m_ObjectHideFlags: 0
