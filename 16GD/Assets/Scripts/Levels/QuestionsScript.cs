@@ -39,6 +39,15 @@ public class QuestionsScript : MonoBehaviour
     }
     public Vector3 spawnArea;
 
+    public Transform playerSpawnPoint;
+    public Vector3 RespawnLocation
+    {
+        get
+        {
+            return playerSpawnPoint.position;
+        }
+    }
+
     public int killedEnemies;
     private bool AllEnemiesDead
     {
@@ -60,6 +69,7 @@ public class QuestionsScript : MonoBehaviour
     {
         RoomAnimator.SetBool(HideWalls, true);
         RoomAnimator.SetBool(ShowWalls, false);
+       
     }
 
     public void OnTriggerEnter(Collider other)
