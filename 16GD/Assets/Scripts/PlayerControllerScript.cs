@@ -35,6 +35,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.playerReference = this;
+
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
 

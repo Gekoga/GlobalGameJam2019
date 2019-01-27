@@ -12,8 +12,9 @@ namespace Enemy
             Health = 80f;
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             // Testing
             if (Input.GetKey(KeyCode.K))
             {

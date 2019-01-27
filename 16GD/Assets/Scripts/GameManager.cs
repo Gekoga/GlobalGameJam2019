@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance;
 
+    public PlayerControllerScript playerReference;
+
     // Misc
     public int EnemyKillCount { get; private set; }
     public int EnemiesInGame;
