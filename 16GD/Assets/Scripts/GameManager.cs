@@ -1,6 +1,7 @@
 ﻿using System;
 using Enemy;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     // Misc
     public int EnemyKillCount { get; private set; }
     public int EnemiesInGame;
+    public int LevelInt;
 
     // Events
     public event Action<AbstractEnemy> OnEnemyDeath;
@@ -42,13 +44,18 @@ public class GameManager : MonoBehaviour
     public void EnemyDeath(AbstractEnemy enemy)
     {
         OnEnemyDeath?.Invoke(enemy);
+
         EnemyKillCount++;
-        if(EnemyKillCount >= EnemiesInGame)
+        if (EnemyKillCount < EnemiesInGame)
+        {
+            return;
+        }
+
+        if (RoomManager.Instance != null)
         {
             RoomManager.Instance.onStageComplete();
-            //InvokeOnLevelCompleted();
         }
-        Debug.Log($"we killed {enemy.Name}, we have now slain {EnemyKillCount} enemies");
+
         Destroy(enemy.gameObject);
     }
 
@@ -63,5 +70,11 @@ public class GameManager : MonoBehaviour
     {
         OnLevelCompleted?.Invoke(this);
         Debug.Log("We completed the level");
+    }
+
+    // Opens the next level
+    public void OpenNewLevel()
+    {
+        SceneManager.LoadScene(LevelInt);
     }
 }

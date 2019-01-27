@@ -48,8 +48,7 @@ public class Pickup : MonoBehaviour
     public void InvokeOnPickedUp()
     {
         OnPickedUp?.Invoke(this);
-
-        Debug.Log($"picked up..");
+        GameManager.Instance.OpenNewLevel();
     }
 
     private void InvokeOnCanPickUp()

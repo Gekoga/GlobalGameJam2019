@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MouseSensitivity: 0
-  MoveSpeed: 0
+  moveSpeed: 0
   JumpForce: 0
 --- !u!54 &614165052
 Rigidbody:
@@ -992,6 +992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemiesInGame: 0
+  LevelInt: 1
 --- !u!4 &1257971381
 Transform:
   m_ObjectHideFlags: 0
