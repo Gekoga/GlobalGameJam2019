@@ -8,15 +8,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     // Misc
-    private int enemyKillCount;
+    public int EnemyKillCount { get; private set; }
     public int EnemiesInGame;
-    public int EnemiesLeft
-    {
-        get
-        {
-            return EnemiesInGame - enemyKillCount;
-        }
-    }
 
     // Events
     public event Action<AbstractEnemy> OnEnemyDeath;
@@ -49,13 +42,13 @@ public class GameManager : MonoBehaviour
     public void EnemyDeath(AbstractEnemy enemy)
     {
         OnEnemyDeath?.Invoke(enemy);
-        enemyKillCount++;
-        if(enemyKillCount >= EnemiesInGame)
+        EnemyKillCount++;
+        if(EnemyKillCount >= EnemiesInGame)
         {
             RoomManager.Instance.onStageComplete();
             //InvokeOnLevelCompleted();
         }
-        Debug.Log($"we killed {enemy.Name}, we have now slain {enemyKillCount} enemies");
+        Debug.Log($"we killed {enemy.Name}, we have now slain {EnemyKillCount} enemies");
         Destroy(enemy.gameObject);
     }
 
