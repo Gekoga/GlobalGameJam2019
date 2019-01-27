@@ -14,14 +14,14 @@ public class RoomScript : MonoBehaviour
     }
     public RoomType roomType;
 
-    public Animator RoomAnimator
+    private Animator RoomAnimator
     {
         get
         {
             return gameObject.GetComponent<Animator>();
         }
     }
-    public BoxCollider RoomCollider
+    private BoxCollider RoomCollider
     {
         get
         {
@@ -29,10 +29,8 @@ public class RoomScript : MonoBehaviour
         }
     }
 
-    private bool hideWall;
-    private bool showWall;
-
-    private bool useAnimations;
+    private static readonly string HideWalls = "HideWalls";
+    private static readonly string ShowWalls = "ShowWalls";
 
     public Vector3 spawnCenter;
     private Vector3 SpawnCenter
@@ -49,7 +47,7 @@ public class RoomScript : MonoBehaviour
     {
         get
         {
-            if (GameManager.Instance.EnemiesLeft == 0)
+            if (RoomManager.Instance.EnemiesLeft == 0)
                 return true;
             else
                 return false;
@@ -58,30 +56,21 @@ public class RoomScript : MonoBehaviour
 
     public void Start()
     {
-        if (roomType == RoomType.Enemies)
-            SpawnEnemies();
-
-        hideWall = true;
-        showWall = false;
-
-        RoomAnimator.SetBool("HideWalls", true);
-        RoomAnimator.SetBool("ShowWalls", false);
+        RoomAnimator.SetBool(HideWalls, true);
+        RoomAnimator.SetBool(ShowWalls, false);
     }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            hideWall = false;
-            showWall = true;
-            RoomAnimator.SetBool("HideWalls", hideWall);
-            RoomAnimator.SetBool("ShowWalls", showWall);
+            RoomAnimator.SetBool(HideWalls, false);
+            RoomAnimator.SetBool(ShowWalls, true);
         }
     }
 
     private static Vector3 RandomPointInBox(Vector3 center, Vector3 size)
     {
-
         return center + new Vector3(
            (Random.value - 0.5f) * size.x,
            (Random.value - 0.5f) * size.y,
@@ -95,7 +84,6 @@ public class RoomScript : MonoBehaviour
         {
             GameObject enemy = Instantiate(enemyPrefab, RandomPointInBox(SpawnCenter, spawnArea), Quaternion.identity);
         }
-
 
         Invoke("WaitEnemies", 1f);
     }
@@ -113,17 +101,14 @@ public class RoomScript : MonoBehaviour
 
     private IEnumerator WaitAfterEnemies()
     {
+        Debug.Log("Test one");
         //Wait for a while to check if there are enemies, otherwise it will return 0
         yield return new WaitWhile(() => NoEnemiesLeft == false);
-        Debug.Log("TestSomething");
 
-        hideWall = true;
-        showWall = false;
-        RoomAnimator.SetBool("ShowWalls", false);
-        RoomAnimator.SetBool("HideWalls", true);
+        Debug.Log("Test two");
 
-        Debug.Log("Test");
-
+        RoomAnimator.SetBool(HideWalls, true);
+        RoomAnimator.SetBool(ShowWalls, false);
     }
 
     //See when you enter

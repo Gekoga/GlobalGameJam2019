@@ -65,7 +65,6 @@ public class PlayerControllerScript : MonoBehaviour
         {
             Pickup.Instance.InvokeOnPickedUp();
         }
-        //Use Pickup
     }
 
     #region Events
