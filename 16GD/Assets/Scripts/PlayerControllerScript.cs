@@ -23,7 +23,7 @@ public class PlayerControllerScript : MonoBehaviour
     }
     public float JumpForce;
 
-    private bool isGrouded;
+    public bool isGrouded;
     private bool canPickUp;
     private float DistanceToTheGround
     {
